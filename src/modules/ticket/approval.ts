@@ -1,6 +1,6 @@
 // ===== src/modules/ticket/approval.ts =====
 import { CorelinksBot } from '../../bot';
-import { TicketData, TicketStatus, ServiceType } from '@types/ticket';
+import { TicketData, TicketStatus, ServiceType } from '../../types/ticket';
 import { Logger } from '@utils/logger';
 import { EmbedManager } from '@utils/embed';
 import { PermissionManager } from '@utils/permissions';
@@ -206,7 +206,7 @@ export class TicketApprovalManager {
       }
 
       // Assign to random available staff
-      const randomStaff = availableStaff.random();
+      const randomStaff = availableStaff.map(member => member)[Math.floor(Math.random() * availableStaff.size)];
       const { TicketManager } = await import('./index');
       const ticketManager = new TicketManager(this.bot);
       

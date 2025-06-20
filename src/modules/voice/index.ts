@@ -10,12 +10,12 @@ import { TempChannelManager } from './tempChannels';
 import { VoiceControlManager } from './controls';
 
 export class VoiceManager {
-  private bot: CorelinksBot;
-  private logger: Logger;
-  private tempChannelManager: TempChannelManager;
-  private controlManager: VoiceControlManager;
-  private tempChannels: Map<string, TempChannelData> = new Map(); // channelId -> data
-  private channelOwners: Map<string, string> = new Map(); // channelId -> ownerId
+  public bot: CorelinksBot;
+  public logger: Logger;
+  public tempChannelManager: TempChannelManager;
+  public controlManager: VoiceControlManager;
+  public tempChannels: Map<string, TempChannelData> = new Map(); // channelId -> data
+  public channelOwners: Map<string, string> = new Map(); // channelId -> ownerId
 
   constructor(bot: CorelinksBot) {
     this.bot = bot;
@@ -92,7 +92,7 @@ export class VoiceManager {
       const guild = this.bot.client.guilds.cache.first();
       if (!guild) return null;
 
-      const category = guild.channels.cache.get(config.channels.tempVoiceCategory);
+      const category = guild.channels.cache.get(config.channels.voiceTempCategory);
       const defaultName = `${owner.user.username}'s Room`;
 
       const tempChannel = await guild.channels.create({

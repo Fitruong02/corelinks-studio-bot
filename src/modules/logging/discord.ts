@@ -4,13 +4,13 @@ import { TextChannel } from 'discord.js';
 import { Logger } from '@utils/logger';
 import { EmbedManager } from '@utils/embed';
 
-export class ChannelLogger {
+export class DiscordLogger {
   private bot: CorelinksBot;
   private logger: Logger;
 
   constructor(bot: CorelinksBot) {
     this.bot = bot;
-    this.logger = new Logger('ChannelLogger');
+    this.logger = new Logger('DiscordLogger');
   }
 
   async logToChannel(channelName: string, embed: any): Promise<boolean> {
@@ -74,6 +74,69 @@ export class ChannelLogger {
       this.logger.error('Failed to log error:', logError);
     }
   }
-}
 
-export { ChannelLogger as DiscordLogger };
+  async logMessageEdit(oldMessage: any, newMessage: any): Promise<void> {
+    try {
+      if (!this.bot.channelManager) return;
+
+      const editEmbed = EmbedManager.createLogEmbed(
+        '✏️ Message Edited',
+        `A message was edited in <#${newMessage.channelId}>`,
+        [
+          { name: 'Author', value: oldMessage.author.tag, inline: true },
+          { name: 'Old Content', value: oldMessage.content || 'No content', inline: false },
+          { name: 'New Content', value: newMessage.content || 'No content', inline: false },
+          { name: 'Timestamp', value: `<t:${Math.floor(newMessage.createdAt.getTime() / 1000)}:F>`, inline: true }
+        ]
+      );
+
+      await this.logToChannel('msgLogs', editEmbed);
+
+    } catch (error) {
+      this.logger.error('Failed to log message edit:', error);
+    }
+  }
+
+  async logMessageDelete(message: any): Promise<void> {
+    try {
+      if (!this.bot.channelManager) return;
+
+      const deleteEmbed = EmbedManager.createLogEmbed(
+        '🗑️ Message Deleted',
+        `A message was deleted in <#${message.channelId}>`,
+        [
+          { name: 'Author', value: message.author.tag, inline: true },
+          { name: 'Content', value: message.content || 'No content', inline: false },
+          { name: 'Timestamp', value: `<t:${Math.floor(message.createdAt.getTime() / 1000)}:F>`, inline: true }
+        ]
+      );
+
+      await this.logToChannel('msgLogs', deleteEmbed);
+
+    } catch (error) {
+      this.logger.error('Failed to log message delete:', error);
+    }
+  }
+
+  async logVoiceActivity(oldState: any, newState: any): Promise<void> {
+    try {
+      if (!this.bot.channelManager) return;
+
+      const voiceEmbed = EmbedManager.createLogEmbed(
+        '🔊 Voice Activity',
+        `Voice state changed in <#${newState.channelId}>`,
+        [
+          { name: 'User', value: newState.member.user.tag, inline: true },
+          { name: 'Old State', value: oldState.channelId ? `<#${oldState.channelId}>` : 'None', inline: true },
+          { name: 'New State', value: newState.channelId ? `<#${newState.channelId}>` : 'None', inline: true },
+          { name: 'Timestamp', value: `<t:${Math.floor(new Date().getTime() / 1000)}:F>`, inline: true }
+        ]
+      );
+
+      await this.logToChannel('voiceLogs', voiceEmbed);
+
+    } catch (error) {
+      this.logger.error('Failed to log voice activity:', error);
+    }
+  }
+}
