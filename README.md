@@ -1,4 +1,4 @@
-// ===== README.md =====
+
 # Corelinks Studio Discord Bot
 
 Professional Discord bot for Corelinks Studio with comprehensive ticket management, payment integration, voice channel management, moderation tools, and analytics.
