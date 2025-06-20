@@ -1,5 +1,5 @@
 // ===== src/bot.ts =====
-import { Client, GatewayIntentBits, Collection, REST, Routes } from 'discord.js';
+import { Client, GatewayIntentBits, Collection, REST, Routes, SlashCommandBuilder } from 'discord.js';
 import { config } from '@config/config';
 import { ChannelManager } from '@config/channels';
 import { Logger } from '@utils/logger';
@@ -8,7 +8,7 @@ import { EventLoader } from '@events/index';
 
 export class CorelinksBot {
   public client: Client;
-  public commands: Collection<string, any>;
+  public commands: Collection<string, { data: SlashCommandBuilder, execute: Function }>;
   public channelManager: ChannelManager | null = null;
   private logger: Logger;
   private commandLoader: CommandLoader;
@@ -73,7 +73,7 @@ export class CorelinksBot {
 
       await rest.put(
         Routes.applicationGuildCommands(config.discord.clientId, config.discord.guildId),
-        { body: commands }
+        { body: commands.map(cmd => cmd.toJSON()) }
       );
 
       this.logger.info('Slash commands registered successfully');

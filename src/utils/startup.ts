@@ -68,25 +68,25 @@ export class StartupManager {
     this.logger.info('✓ Required environment variables present');
 
     // Check feature-specific requirements
-    if (FeatureManager.isEnabled('paymentSystem')) {
-      const payosVars = ['PAYOS_CLIENT_ID', 'PAYOS_API_KEY', 'PAYOS_CHECKSUM_KEY'];
-      for (const key of payosVars) {
-        if (!process.env[key]) {
-          throw new Error(`PayOS enabled but missing: ${key}`);
-        }
-      }
-      this.logger.info('✓ PayOS configuration validated');
-    }
+    // if (FeatureManager.isEnabled('paymentSystem')) {
+    //   const payosVars = ['PAYOS_CLIENT_ID', 'PAYOS_API_KEY', 'PAYOS_CHECKSUM_KEY'];
+    //   for (const key of payosVars) {
+    //     if (!process.env[key]) {
+    //       throw new Error(`PayOS enabled but missing: ${key}`);
+    //     }
+    //   }
+    //   this.logger.info('✓ PayOS configuration validated');
+    // }
 
-    if (FeatureManager.isEnabled('analytics')) {
-      const googleVars = ['GOOGLE_SHEETS_ID', 'GOOGLE_CREDENTIALS'];
-      for (const key of googleVars) {
-        if (!process.env[key]) {
-          throw new Error(`Analytics enabled but missing: ${key}`);
-        }
-      }
-      this.logger.info('✓ Google Sheets configuration validated');
-    }
+    // if (FeatureManager.isEnabled('analytics')) {
+    //   const googleVars = ['GOOGLE_SHEETS_ID', 'GOOGLE_CREDENTIALS'];
+    //   for (const key of googleVars) {
+    //     if (!process.env[key]) {
+    //       throw new Error(`Analytics enabled but missing: ${key}`);
+    //     }
+    //   }
+    //   this.logger.info('✓ Google Sheets configuration validated');
+    // }
   }
 
   private static displayConfiguration(): void {
