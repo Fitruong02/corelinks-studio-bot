@@ -1,5 +1,5 @@
 // ===== src/commands/role.ts =====
-import { SlashCommandBuilder, ChatInputCommandInteraction, ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, Role } from 'discord.js';
 import { CorelinksBot } from '../bot';
 import { RoleManager } from '@modules/role/index';
 import { EmbedManager } from '@utils/embed';
@@ -369,7 +369,7 @@ async function handleRoleMassRemove(interaction: ChatInputCommandInteraction, ro
 
 async function handleRoleInfo(interaction: ChatInputCommandInteraction, roleManager: RoleManager): Promise<void> {
   try {
-    const role = interaction.options.getRole('role', true);
+    const role = interaction.options.getRole('role', true) as Role;
 
     const infoEmbed = EmbedManager.createInfoEmbed(
       `Role Information: ${role.name}`,

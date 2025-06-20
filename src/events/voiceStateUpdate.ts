@@ -8,33 +8,31 @@ import { HelperUtils } from '@utils/helpers';
 
 const logger = new Logger('VoiceStateUpdateEvent');
 
-export const voiceStateUpdateEvent = {
-  name: Events.VoiceStateUpdate,
-  once: false,
-  async execute(oldState: VoiceState, newState: VoiceState, bot: CorelinksBot) {
+export function voiceStateUpdateEvent(bot: CorelinksBot) {
+  bot.client.on(Events.VoiceStateUpdate, async (oldState: VoiceState, newState: VoiceState) => {
     try {
       if (!bot.channelManager) return;
-      
+
       const voiceManager = new VoiceManager(bot);
-      
+
       // Handle temp channel creation
       await voiceManager.handleVoiceStateUpdate(oldState, newState);
-      
+
       // Log voice activity
       await logVoiceActivity(oldState, newState, bot);
-      
+
     } catch (error) {
       logger.error('Error in voiceStateUpdate event:', error);
     }
-  }
-};
+  });
+}
 
 async function logVoiceActivity(oldState: VoiceState, newState: VoiceState, bot: CorelinksBot) {
   if (!bot.channelManager || !newState.member) return;
-  
+
   const member = newState.member;
   let logMessage = '';
-  
+
   // User joined a voice channel
   if (!oldState.channel && newState.channel) {
     logMessage = `🔊 ${HelperUtils.formatUserTag(member)} joined voice channel: ${newState.channel.name}`;
@@ -55,7 +53,7 @@ async function logVoiceActivity(oldState: VoiceState, newState: VoiceState, bot:
   else if (oldState.deaf !== newState.deaf) {
     logMessage = `🔇 ${HelperUtils.formatUserTag(member)} ${newState.deaf ? 'deafened' : 'undeafened'} in ${newState.channel?.name}`;
   }
-  
+
   if (logMessage) {
     const embed = EmbedManager.createLogEmbed('Voice Activity', logMessage);
     await bot.channelManager.sendLog('voiceLogs', embed);

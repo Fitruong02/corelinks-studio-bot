@@ -6,10 +6,8 @@ import { AutoModerationManager } from '@modules/moderation/automod';
 
 const logger = new Logger('MessageCreateEvent');
 
-export const messageCreateEvent = {
-  name: Events.MessageCreate,
-  once: false,
-  async execute(message: Message, bot: CorelinksBot) {
+export function messageCreateEvent(bot: CorelinksBot) {
+  bot.client.on(Events.MessageCreate, async (message: Message) => {
     try {
       // Ignore bot messages
       if (message.author.bot) return;
@@ -24,5 +22,5 @@ export const messageCreateEvent = {
     } catch (error) {
       logger.error('Error in messageCreate event:', error);
     }
-  }
-};
+  });
+}

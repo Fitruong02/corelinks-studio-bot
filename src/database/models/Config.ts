@@ -1,6 +1,6 @@
 // ===== src/database/models/Config.ts =====
 import { database } from '@config/database';
-import { BotConfigRecord } from '@types/database';
+import { BotConfigRecord } from '../../types/database.js';
 import { Logger } from '@utils/logger';
 
 export class ConfigModel {

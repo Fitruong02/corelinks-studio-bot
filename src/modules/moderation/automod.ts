@@ -120,7 +120,7 @@ export class AutoModerationManager {
     }
   }
 
-  private async handleViolation(message: Message, type: keyof AutoModSettings, reason: string): Promise<void> {
+  private async handleViolation(message: Message, type: string, reason: string): Promise<void> {
     try {
       const setting = this.settings[type as keyof AutoModSettings] as AutoModRule;
       if (!setting || !setting.enabled) return;

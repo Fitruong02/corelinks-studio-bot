@@ -35,17 +35,22 @@ export class EventLoader {
       let loadedCount = 0;
 
       for (const event of events) {
-        if (event.name && event.execute) {
-          if (event.once) {
-            this.bot.client.once(event.name as keyof import('discord.js').ClientEvents, (...args: unknown[]) => event.execute(...args, this.bot));
-            this.bot.client.on(event.name as keyof import('discord.js').ClientEvents, (...args: unknown[]) => event.execute(...args, this.bot));
-          }
+        // if (event.name && event.execute) {
+        //   if (event.once) {
+        //     this.bot.client.once(event.name as keyof import('discord.js').ClientEvents, (...args: any[]) => event.execute(...args, this.bot));
+        //   } else {
+        //     this.bot.client.on(event.name as keyof import('discord.js').ClientEvents, (...args: any[]) => event.execute(...args, this.bot));
+        //   }
           
-          this.logger.debug(`Loaded event: ${event.name}`);
-          loadedCount++;
-        } else {
-          this.logger.warn('Invalid event structure detected:', event);
-        }
+        //   this.logger.debug(`Loaded event: ${event.name}`);
+        //   loadedCount++;
+        // } else {
+        //   this.logger.warn('Invalid event structure detected:', event);
+        // }
+
+        event(this.bot);
+        this.logger.debug(`Loaded event: ${event.name}`);
+        loadedCount++;
       }
 
       // Add additional event handlers

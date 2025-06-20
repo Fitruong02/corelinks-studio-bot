@@ -19,7 +19,7 @@ export class LoggingManager {
     this.logger = new Logger('LoggingManager');
     this.channelLogger = new ChannelLogger(bot);
     this.discordLogger = new DiscordLogger(bot);
-    
+
     // Cache invites for tracking
     this.cacheInvites();
   }
@@ -97,7 +97,7 @@ export class LoggingManager {
 
   async logMessageEdit(oldMessage: Message, newMessage: Message): Promise<void> {
     try {
-    await this.discordLogger.logMessageEdit(oldMessage, newMessage);
+      await this.discordLogger.logMessageEdit(oldMessage, newMessage);
     } catch (error) {
       this.logger.error('Failed to log message edit:', error);
     }

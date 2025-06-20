@@ -93,7 +93,7 @@ export class GoogleSheetsManager {
       return true;
 
     } catch (error) {
-      if (error.message?.includes('already exists')) {
+      if ((error as Error).message?.includes('already exists')) {
         this.logger.info(`Sheet ${sheetName} already exists`);
         return true;
       }
